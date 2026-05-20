@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legal Buddy Chat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="../index.html">Legal Buddy</a>
+      <nav class="nav">
+        <a class="active" href="./chat.html">Chat</a>
+        <a href="./scanner.html">Scanner</a>
+        <a href="./about.html">About</a>
+      </nav>
+    </header>
+
+    <main class="single-panel-layout">
+      <section class="panel wide-panel">
+        <div class="panel-head">
+          <h1>Legal Chat</h1>
+          <p>Ask about rights, consumer complaints, cyber fraud, employment issues, tenancy, contracts, or basic Indian legal procedures.</p>
+        </div>
+        <div id="chat-log" class="chat-log"></div>
+        <form id="chat-form" class="stack">
+          <textarea id="chat-input" rows="4" placeholder="Example: My employer has withheld my final salary for 2 months. What options do I have in India?"></textarea>
+          <button type="submit">Ask Gemma</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <template id="message-template">
+    <div class="message">
+      <div class="message-card">
+        <span class="role"></span>
+        <div class="body"></div>
+      </div>
+    </div>
+  </template>
+
+  <script src="../assets/config.js"></script>
+  <script src="../assets/common.js"></script>
+  <script src="../assets/chat.js"></script>
+</body>
+</html>

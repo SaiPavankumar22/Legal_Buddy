@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legal Buddy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="./index.html">Legal Buddy</a>
+      <nav class="nav">
+        <a href="./pages/chat.html">Chat</a>
+        <a href="./pages/scanner.html">Scanner</a>
+        <a href="./pages/about.html">About</a>
+      </nav>
+    </header>
+
+    <main class="hero-layout">
+      <section class="hero-card">
+        <p class="eyebrow">Gemma 4 + Ollama + Indian Law Corpus</p>
+        <h1>Local legal help people can actually use</h1>
+        <p class="lede">
+          Legal Buddy turns Gemma into a practical Indian-law assistant for daily questions,
+          hidden terms, privacy policies, and contract risk checks without relying on cloud inference.
+        </p>
+        <div class="cta-row">
+          <a class="button" href="./pages/chat.html">Open Legal Chat</a>
+          <a class="button button-secondary" href="./pages/scanner.html">Scan a Document</a>
+        </div>
+        <div class="status-card">
+          <span class="status-dot" id="health-dot"></span>
+          <div>
+            <strong>Backend status</strong>
+            <p id="health-text">Checking local Ollama backend...</p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="stack-panel">
+        <article class="info-card">
+          <h2>What Gemma does here</h2>
+          <p>Handles grounded legal chat and multimodal document review from your local Ollama endpoint.</p>
+        </article>
+        <article class="info-card">
+          <h2>What makes it useful</h2>
+          <p>Users can upload PDFs or screenshots of unread terms and conditions, and the model highlights risky clauses in plain language.</p>
+        </article>
+        <article class="info-card">
+          <h2>Grounded for India</h2>
+          <p>The chatbot uses the bundled Indian law corpus from `legal_texts.npy` and `legal_faiss.index`.</p>
+        </article>
+      </aside>
+    </main>
+  </div>
+
+  <script src="./assets/config.js"></script>
+  <script src="./assets/common.js"></script>
+</body>
+</html>

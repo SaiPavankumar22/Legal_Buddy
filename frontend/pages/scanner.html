@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legal Buddy Scanner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="../index.html">Legal Buddy</a>
+      <nav class="nav">
+        <a href="./chat.html">Chat</a>
+        <a class="active" href="./scanner.html">Scanner</a>
+        <a href="./about.html">About</a>
+      </nav>
+    </header>
+
+    <main class="scanner-layout">
+      <section class="panel">
+        <div class="panel-head">
+          <h1>Terms &amp; Document Scanner</h1>
+          <p>Upload a PDF or screenshot. PDFs are converted into page images so Gemma can inspect them visually.</p>
+        </div>
+        <form id="scan-form" class="stack">
+          <input id="scan-file" type="file" accept=".pdf,image/png,image/jpeg,image/webp,image/bmp,image/tiff">
+          <textarea id="scan-question" rows="3" placeholder="Example: Check if this privacy policy has risky data sharing, auto-renewal, or one-sided clauses."></textarea>
+          <button type="submit">Analyze Document</button>
+        </form>
+        <div id="scan-meta" class="meta"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Gemma's Review</h2>
+          <p>Structured legal review with sections, red flags, obligations, and practical next steps.</p>
+        </div>
+        <div id="scan-output" class="scan-output"></div>
+      </section>
+
+      <section class="panel full-span">
+        <div class="panel-head">
+          <h2>Page Previews</h2>
+          <p>These are the PDF pages or uploaded image surfaces that were passed into the multimodal review flow.</p>
+        </div>
+        <div id="scan-previews" class="preview-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../assets/config.js"></script>
+  <script src="../assets/common.js"></script>
+  <script src="../assets/scanner.js"></script>
+</body>
+</html>

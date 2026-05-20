@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Legal Buddy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="../index.html">Legal Buddy</a>
+      <nav class="nav">
+        <a href="./chat.html">Chat</a>
+        <a href="./scanner.html">Scanner</a>
+        <a class="active" href="./about.html">About</a>
+      </nav>
+    </header>
+
+    <main class="about-layout">
+      <section class="panel">
+        <div class="panel-head">
+          <h1>Why this project exists</h1>
+          <p>People regularly accept terms, privacy policies, and contract clauses they do not fully understand. Legal Buddy turns local Gemma inference into a safety layer.</p>
+        </div>
+        <div class="prose-block">
+          <p>This project is fully local-first at the model layer. The backend talks to Ollama on localhost and uses Gemma as the reasoning engine for both legal Q&amp;A and multimodal document analysis.</p>
+          <p>The Indian-law corpus comes from the bundled `legal_texts.npy` and `legal_faiss.index` files, which makes the legal chat more grounded than a generic chatbot.</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Why `gemma4:e2b`</h2>
+          <p>A practical local model for privacy-sensitive user documents and lightweight hackathon demos.</p>
+        </div>
+        <ul class="feature-list">
+          <li>Runs through Ollama on localhost, keeping the product local-first.</li>
+          <li>Handles text chat and image-based document inspection in one workflow.</li>
+          <li>Lets you show judges intentional model selection around privacy, accessibility, and deployment simplicity.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Suggested demo flow</h2>
+          <p>Use these three steps in the hackathon presentation.</p>
+        </div>
+        <ol class="feature-list">
+          <li>Ask a grounded legal question about tenancy, fraud, salary withholding, or consumer rights.</li>
+          <li>Upload a privacy policy PDF or screenshot-heavy terms page and let Gemma highlight risky clauses.</li>
+          <li>Explain that the app stays local around Ollama and uses the Indian legal corpus for better relevance.</li>
+        </ol>
+      </section>
+    </main>
+  </div>
+
+  <script src="../assets/config.js"></script>
+  <script src="../assets/common.js"></script>
+</body>
+</html>
