@@ -11,8 +11,13 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from backend import settings
+from backend.services.document_service import (
+    analyze_document_full,
+    chat_with_document,
+    draft_legal_document,
+)
 from backend.services.ocr_service import extract_document_payload
-from backend.services.ollama_service import analyze_document, check_ollama_health, generate_chat_reply
+from backend.services.ollama_service import check_ollama_health, generate_chat_reply
 
 
 app = FastAPI(title="Legal Buddy Backend")
@@ -32,6 +37,19 @@ app.add_middleware(
 class ChatRequest(BaseModel):
     message: str
     history: Optional[List[Dict[str, Any]]] = None
+
+
+class DocumentChatRequest(BaseModel):
+    document_id: str
+    question: str
+
+
+class DraftRequest(BaseModel):
+    document_type: str
+    party_a: str
+    party_b: str
+    key_terms: str
+    jurisdiction: str = "India"
 
 
 def _status_from_error(message: str) -> int:
@@ -56,7 +74,6 @@ def open_frontend_in_browser() -> None:
     try:
         webbrowser.open(APP_URL, new=2)
     except Exception:
-        # Browser launch should never stop the API from starting.
         pass
 
 
@@ -66,7 +83,7 @@ def api_root() -> Dict[str, Any]:
         "name": "Legal Buddy Backend",
         "mode": "local-only",
         "ollamaModel": settings.OLLAMA_CHAT_MODEL,
-        "endpoints": ["/api/health", "/api/chat", "/api/scan"],
+        "endpoints": ["/api/health", "/api/chat", "/api/scan", "/api/document-chat", "/api/draft"],
     }
 
 
@@ -94,7 +111,7 @@ def health() -> Dict[str, Any]:
         "timestamp": __import__("datetime").datetime.utcnow().isoformat() + "Z",
         "port": settings.PORT,
         "ollama": ollama,
-        "endpoints": ["/api/chat", "/api/scan"],
+        "endpoints": ["/api/chat", "/api/scan", "/api/document-chat", "/api/draft"],
     }
 
 
@@ -136,24 +153,28 @@ async def scan(
             mime_type=document.content_type or "",
             original_name=document.filename,
         )
-        analysis = analyze_document(
+
+        session = analyze_document_full(
+            full_text=payload.text,
+            filename=document.filename or "document",
+            total_pages=payload.total_pages,
             user_prompt=question,
-            text_context=payload.text,
-            image_bytes_list=[page.image_bytes for page in payload.pages],
         )
+
         return {
             "success": True,
+            "documentId": session.document_id,
             "fileName": document.filename,
-            "summary": analysis,
+            "summary": session.analysis,
             "ocrMethod": payload.method,
-            "pagesAnalyzed": len(payload.pages),
+            "pagesAnalyzed": payload.total_pages,
             "totalPages": payload.total_pages,
-            "truncated": payload.truncated,
+            "chunkCount": session.chunk_count,
+            "truncated": False,
             "pagePreviews": [
                 {"pageNumber": page.page_number, "imageDataUrl": page.image_data_url}
                 for page in payload.pages
             ],
-            "extractedText": payload.text[: settings.MAX_TEXT_CHARS],
             "model": settings.OLLAMA_CHAT_MODEL,
             "processingTime": f"{(time.time() - start):.1f}s",
         }
@@ -162,6 +183,42 @@ async def scan(
         raise HTTPException(
             status_code=_status_from_error(detail),
             detail={"error": detail, "processingTime": f"{(time.time() - start):.1f}s"},
+        ) from exc
+
+
+@app.post("/api/document-chat")
+def document_chat(req: DocumentChatRequest) -> Dict[str, Any]:
+    if not req.document_id or not req.question:
+        raise HTTPException(status_code=400, detail={"error": "document_id and question are required."})
+
+    try:
+        answer = chat_with_document(document_id=req.document_id, question=req.question)
+        return {"answer": answer}
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail={"error": str(exc)},
+        ) from exc
+
+
+@app.post("/api/draft")
+def draft(req: DraftRequest) -> Dict[str, Any]:
+    if not req.document_type or not req.party_a or not req.party_b:
+        raise HTTPException(status_code=400, detail={"error": "document_type, party_a, and party_b are required."})
+
+    try:
+        document = draft_legal_document(
+            document_type=req.document_type,
+            party_a=req.party_a,
+            party_b=req.party_b,
+            key_terms=req.key_terms or "Standard terms apply.",
+            jurisdiction=req.jurisdiction or "India",
+        )
+        return {"document": document, "documentType": req.document_type}
+    except Exception as exc:
+        raise HTTPException(
+            status_code=_status_from_error(str(exc)),
+            detail={"error": str(exc)},
         ) from exc
 
 

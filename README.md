@@ -82,11 +82,15 @@ legal-buddy/
 │   ├── index.html                # Landing page + backend health
 │   ├── pages/
 │   │   ├── chat.html             # Legal Q&A
-│   │   ├── scanner.html          # Document review
+│   │   ├── documents.html        # Upload & review documents
+│   │   ├── draft.html            # Draft legal documents
+│   │   ├── scanner.html          # Redirects to documents.html
 │   │   └── about.html            # Project overview
 │   └── assets/
 │       ├── chat.js
-│       ├── scanner.js
+│       ├── documents.js
+│       ├── draft-page.js
+│       ├── markdown-render.js
 │       ├── config.js
 │       └── styles.css
 ├── backend/
@@ -241,7 +245,8 @@ If no matching embedding model is configured, the backend falls back to keyword 
 | --- | --- | --- |
 | Home | `/index.html` | Intro and backend health |
 | Chat | `/pages/chat.html` | Grounded legal Q&A |
-| Scanner | `/pages/scanner.html` | Contract and policy review |
+| Documents | `/pages/documents.html` | Full PDF review + Q&A on your file |
+| Draft | `/pages/draft.html` | Generate legal document drafts |
 | About | `/pages/about.html` | Hackathon story and demo flow |
 
 ---

@@ -50,3 +50,5 @@ logs/
 # Local temp files
 *.tmp
 *.temp
+
+/files/*

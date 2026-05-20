@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Help — Legal Buddy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="../index.html">Legal Buddy</a>
+      <nav class="nav">
+        <a href="./chat.html">Chat</a>
+        <a class="active" href="./documents.html">Documents</a>
+        <a href="./draft.html">Draft</a>
+        <a href="./about.html">About</a>
+      </nav>
+    </header>
+
+    <header class="page-hero page-hero--docs">
+      <div class="page-hero-text">
+        <p class="page-hero-label">Document Help</p>
+        <h1>Understand any contract before you sign</h1>
+        <p>Upload a PDF or image. We read every page, flag risks, and let you ask follow-up questions about your file.</p>
+      </div>
+      <a class="page-hero-link" href="./draft.html">Need to create a document instead? → Draft</a>
+    </header>
+
+    <main class="doc-workspace">
+
+      <!-- Upload -->
+      <section id="upload-section" class="doc-upload-grid">
+        <div class="panel doc-upload-card">
+          <h2 class="card-title">Upload your document</h2>
+          <p class="card-sub">Terms, privacy policies, employment letters, rental agreements, loan papers — any PDF up to 15 MB.</p>
+
+          <div id="drop-zone" class="drop-zone drop-zone--large">
+            <div id="dz-idle" class="dz-idle">
+              <div class="dz-icon-wrap">PDF</div>
+              <p class="dz-label">Drop file here or <label class="dz-browse" for="scan-file">choose from device</label></p>
+              <p class="dz-hint">PDF · PNG · JPG · WebP</p>
+              <input id="scan-file" type="file" accept=".pdf,image/png,image/jpeg,image/webp,image/bmp,image/tiff" hidden>
+            </div>
+            <div id="dz-ready" class="dz-ready hidden">
+              <span class="dz-file-badge">Ready</span>
+              <span id="dz-filename" class="dz-filename"></span>
+              <button id="dz-clear" type="button" class="dz-clear" title="Remove">Remove</button>
+            </div>
+          </div>
+
+          <label class="field-label" for="scan-question">What should we focus on? <span class="optional">optional</span></label>
+          <textarea id="scan-question" rows="3" placeholder="e.g. data sharing, auto-renewal, termination, penalties…"></textarea>
+
+          <div class="prompt-chips">
+            <span class="chips-label">Quick prompts</span>
+            <div class="chips-row">
+              <button type="button" class="prompt-chip" data-prompt="Find all risky or one-sided clauses and explain them simply.">Risk scan</button>
+              <button type="button" class="prompt-chip" data-prompt="Summarize this document in plain language with clear headings.">Summary</button>
+              <button type="button" class="prompt-chip" data-prompt="List all obligations, deadlines, fees, and penalties on the user.">Obligations</button>
+              <button type="button" class="prompt-chip" data-prompt="Check privacy and data sharing clauses. Is my data safe?">Privacy</button>
+            </div>
+          </div>
+
+          <button id="analyze-btn" class="btn-primary btn-block" disabled>Analyze full document</button>
+        </div>
+
+        <aside class="panel doc-steps-card">
+          <h2 class="card-title">How it works</h2>
+          <ol class="steps-list">
+            <li>
+              <span class="step-num">1</span>
+              <div>
+                <strong>Full read</strong>
+                <p>Text is extracted from every page, not just the first few.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-num">2</span>
+              <div>
+                <strong>Section review</strong>
+                <p>Each part is checked for risks, obligations, and unusual terms.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-num">3</span>
+              <div>
+                <strong>Structured report</strong>
+                <p>You get a clear breakdown: snapshot, red flags, money, and next steps.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-num">4</span>
+              <div>
+                <strong>Ask anything</strong>
+                <p>Chat about the same file — clauses, dates, suspicious lines, summaries.</p>
+              </div>
+            </li>
+          </ol>
+          <p class="steps-note">Runs locally via Ollama. Your file stays on your machine.</p>
+        </aside>
+      </section>
+
+      <!-- Processing -->
+      <section id="processing-section" class="panel panel-center doc-processing hidden">
+        <div class="processing-body">
+          <div class="spinner-ring"></div>
+          <p class="processing-title">Reviewing your document</p>
+          <p class="processing-hint">Reading all pages and analyzing each section. Large PDFs may take one to two minutes.</p>
+        </div>
+      </section>
+
+      <!-- Results -->
+      <section id="results-section" class="doc-results hidden">
+        <div class="panel doc-results-header">
+          <div class="result-meta">
+            <h2 id="result-filename" class="result-filename"></h2>
+            <div class="result-tags">
+              <span class="result-badge" id="result-pages-badge"></span>
+              <span class="result-time" id="result-time"></span>
+            </div>
+          </div>
+          <button id="new-scan-btn" class="button-ghost">Upload another</button>
+        </div>
+
+        <div class="panel doc-results-body">
+          <nav class="tab-bar tab-bar--wide" aria-label="Document views">
+            <button class="tab-btn active" data-tab="analysis">Analysis report</button>
+            <button class="tab-btn" data-tab="ask">Ask about this file</button>
+            <button class="tab-btn" data-tab="previews">Page previews</button>
+          </nav>
+
+          <div id="tab-analysis" class="tab-panel">
+            <div id="analysis-output" class="scan-output scan-output--flush"></div>
+          </div>
+
+          <div id="tab-ask" class="tab-panel hidden">
+            <p class="tab-intro">Questions are answered from the uploaded document only.</p>
+            <div id="ask-log" class="ask-log ask-log--tall">
+              <div class="ask-empty" id="ask-empty-state">
+                Try: “What is the notice period?” · “Any hidden fees?” · “Summarize the liability section.”
+              </div>
+            </div>
+            <form id="ask-form" class="ask-input-row">
+              <input id="ask-input" type="text" placeholder="Ask about this document…" autocomplete="off">
+              <button type="submit" id="ask-submit-btn" class="btn-primary">Ask</button>
+            </form>
+          </div>
+
+          <div id="tab-previews" class="tab-panel hidden">
+            <p class="preview-note" id="preview-note"></p>
+            <div id="scan-previews" class="preview-grid"></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="../assets/config.js"></script>
+  <script src="../assets/common.js"></script>
+  <script src="../assets/markdown-render.js"></script>
+  <script src="../assets/documents.js"></script>
+</body>
+</html>

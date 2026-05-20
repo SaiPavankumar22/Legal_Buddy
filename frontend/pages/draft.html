@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draft a Document — Legal Buddy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="../index.html">Legal Buddy</a>
+      <nav class="nav">
+        <a href="./chat.html">Chat</a>
+        <a href="./documents.html">Documents</a>
+        <a class="active" href="./draft.html">Draft</a>
+        <a href="./about.html">About</a>
+      </nav>
+    </header>
+
+    <header class="page-hero page-hero--draft">
+      <div class="page-hero-text">
+        <p class="page-hero-label">Document Drafting</p>
+        <h1>Create a legal document draft</h1>
+        <p>Describe the parties and terms. Gemma generates a structured Indian-law draft you can edit and share with a lawyer.</p>
+      </div>
+      <a class="page-hero-link" href="./documents.html">Reviewing an existing file? → Document Help</a>
+    </header>
+
+    <main class="draft-workspace">
+
+      <div class="draft-layout">
+        <section id="draft-form-panel" class="panel draft-form-panel">
+          <h2 class="card-title">Document details</h2>
+
+          <form id="draft-form" class="draft-form">
+            <div class="draft-row">
+              <label for="draft-type">Document type</label>
+              <select id="draft-type">
+                <option value="Non-Disclosure Agreement (NDA)">Non-Disclosure Agreement (NDA)</option>
+                <option value="Rental Agreement">Rental Agreement</option>
+                <option value="Employment Contract">Employment Contract</option>
+                <option value="Service Agreement">Service Agreement</option>
+                <option value="Sale Agreement">Sale Agreement</option>
+                <option value="Loan Agreement">Loan Agreement</option>
+                <option value="Freelance Contract">Freelance Contract</option>
+                <option value="Partnership Agreement">Partnership Agreement</option>
+                <option value="Vendor Agreement">Vendor Agreement</option>
+                <option value="Leave and License Agreement">Leave and License Agreement</option>
+              </select>
+            </div>
+
+            <div class="type-chips">
+              <button type="button" class="type-chip" data-type="Rental Agreement">Rental</button>
+              <button type="button" class="type-chip" data-type="Non-Disclosure Agreement (NDA)">NDA</button>
+              <button type="button" class="type-chip" data-type="Employment Contract">Employment</button>
+              <button type="button" class="type-chip" data-type="Freelance Contract">Freelance</button>
+              <button type="button" class="type-chip" data-type="Service Agreement">Service</button>
+            </div>
+
+            <div class="draft-cols">
+              <div class="draft-row">
+                <label for="draft-party-a">Party A</label>
+                <input id="draft-party-a" type="text" placeholder="Name or company" required>
+              </div>
+              <div class="draft-row">
+                <label for="draft-party-b">Party B</label>
+                <input id="draft-party-b" type="text" placeholder="Name or company" required>
+              </div>
+            </div>
+
+            <div class="draft-row">
+              <label for="draft-terms">Key terms &amp; requirements</label>
+              <textarea id="draft-terms" rows="6" placeholder="Duration, amounts, property address, notice period, deliverables, payment schedule…"></textarea>
+            </div>
+
+            <div class="draft-row draft-row-sm">
+              <label for="draft-jurisdiction">Jurisdiction</label>
+              <input id="draft-jurisdiction" type="text" value="India">
+            </div>
+
+            <button id="draft-btn" type="submit" class="btn-primary btn-block">Generate draft</button>
+          </form>
+        </section>
+
+        <section class="panel draft-output-panel">
+          <div id="draft-empty" class="draft-empty-state">
+            <div class="draft-empty-icon">§</div>
+            <h3>Your draft will appear here</h3>
+            <p>Fill in the form and click Generate. You can copy the text and have a lawyer review it before use.</p>
+          </div>
+
+          <div id="draft-processing" class="draft-processing hidden">
+            <div class="processing-body">
+              <div class="spinner-ring"></div>
+              <p class="processing-title">Writing your document</p>
+              <p class="processing-hint">This usually takes under a minute.</p>
+            </div>
+          </div>
+
+          <div id="draft-result-area" class="hidden">
+            <div class="draft-result-header">
+              <h3 id="draft-result-title"></h3>
+              <div class="draft-result-actions">
+                <button id="copy-draft-btn" type="button" class="button-ghost">Copy</button>
+                <button id="new-draft-btn" type="button" class="button-ghost">New draft</button>
+              </div>
+            </div>
+            <div class="draft-disclaimer">
+              AI-generated draft for reference only. Not a substitute for advice from a qualified Indian lawyer.
+            </div>
+            <div id="draft-output" class="draft-output"></div>
+          </div>
+        </section>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../assets/config.js"></script>
+  <script src="../assets/common.js"></script>
+  <script src="../assets/draft-page.js"></script>
+</body>
+</html>

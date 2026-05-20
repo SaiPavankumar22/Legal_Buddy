@@ -38,31 +38,33 @@ def _extract_from_pdf(pdf_bytes: bytes) -> DocumentPayload:
 
     pages: List[DocumentPage] = []
     text_chunks: List[str] = []
-    max_pages = min(total_pages, settings.MAX_PDF_PAGES)
+    # Text is extracted from ALL pages; images only for the first N pages (page previews)
+    max_image_pages = min(total_pages, settings.MAX_PDF_PAGES)
 
-    for page_index in range(max_pages):
+    for page_index in range(total_pages):
         page = doc[page_index]
         page_text = (page.get_text("text") or "").strip()
         if page_text:
             text_chunks.append(f"[Page {page_index + 1}]\n{page_text}")
 
-        pix = page.get_pixmap(dpi=144)
-        image_bytes = pix.tobytes("png")
-        pages.append(
-            DocumentPage(
-                page_number=page_index + 1,
-                image_bytes=image_bytes,
-                image_data_url=_to_data_url(image_bytes),
-                extracted_text=page_text,
+        if page_index < max_image_pages:
+            pix = page.get_pixmap(dpi=120)
+            image_bytes = pix.tobytes("png")
+            pages.append(
+                DocumentPage(
+                    page_number=page_index + 1,
+                    image_bytes=image_bytes,
+                    image_data_url=_to_data_url(image_bytes),
+                    extracted_text=page_text,
+                )
             )
-        )
 
     return DocumentPayload(
         text="\n\n".join(text_chunks).strip(),
-        method="pdf-text-layer-and-page-render",
+        method="pdf-full-text-extraction",
         pages=pages,
         total_pages=total_pages,
-        truncated=total_pages > max_pages,
+        truncated=False,  # full text is always extracted now
     )
 
 
